@@ -1,5 +1,6 @@
 package com.example.user.practice;
 
+import android.arch.lifecycle.ViewModel;
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -18,8 +19,8 @@ import de.hdodenhof.circleimageview.CircleImageView;
 public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
 
 
-    private ArrayList<String> mImageNames = new ArrayList<>();
-    private ArrayList<String> mImages = new ArrayList<>();
+    private ArrayList<Group> mGroups = new ArrayList<>();
+    //private ArrayList<String> mImages = new ArrayList<>();
     private Context mContext;
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
@@ -39,9 +40,10 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
 
     //provide a suitable constructor based on type of dataset
     //constructor will get the data we need
-    public MyAdapter(ArrayList<String> imageNames, ArrayList<String> images, Context context){
-        mImageNames = imageNames;
-        mImages = images;
+    public MyAdapter(ArrayList<Group> Groups, Context context){
+        //mImageNames = imageNames;
+        //mImages = images;
+        mGroups = Groups;
         mContext = context;
     }
 
@@ -61,16 +63,16 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
         //get images
         Glide.with(mContext)
                 .asBitmap()
-                .load(mImages.get(position))
+                .load(mGroups.get(position).getPhotoUrl())
                 .into(holder.mGroupImage);
 
-        holder.mTextView.setText(mImageNames.get(position));
+        holder.mTextView.setText(mGroups.get(position).getName());
 
         //sets what happens when u click the object
         holder.mParentLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view){
-                Toast.makeText(mContext, mImageNames.get(position), Toast.LENGTH_SHORT).show();
+                Toast.makeText(mContext, mGroups.get(position).getName(), Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -78,6 +80,6 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
     //return size of your dataset (invoked by layout manager)
     @Override
     public int getItemCount(){
-        return mImageNames.size();
+        return mGroups.size();
     }
 }
